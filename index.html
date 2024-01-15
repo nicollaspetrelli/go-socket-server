@@ -11,6 +11,8 @@
 <body>
     <h2>Locations Recived:</h2>
 
+    <h3 id="company"></h3>
+
     <ul id="body"></ul>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
@@ -20,18 +22,18 @@
             withCredentials: true, // Add this line if you have credentials
         });
 
-        //socket.emit("location", "hello world!") //emitting the message from 1 client
+        let company = prompt("Please enter your company name", "Company Name");
+        document.getElementById("company").innerText = company;
 
-        //all the client reading on that event will get that message once broadcasted
-        socket.on("location", (data) => {
+        socket.emit('joinRoom', company);
+
+        let eventName = 'location'
+
+        socket.on(eventName, (data) => {
             console.log(data);
-            // create a new list item DOM node
             const node = document.createElement("li");
-            // create a text node
             const textNode = document.createTextNode(data);
-            // append the text node to the list item node
             node.appendChild(textNode);
-            // append the list item node to the unordered list
             document.getElementById("body").appendChild(node);
         });
     </script>
