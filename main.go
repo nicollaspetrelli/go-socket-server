@@ -22,14 +22,6 @@ func main() {
 			so.Join(company)
 			log.Println("New user connected in room ", company)
 		})
-
-		// CORS Fix
-		// server.SetAllowRequest(func(req *http.Request) error {
-		// 	req.Header.Add("Access-Control-Allow-Origin", "*")
-		// 	req.Header.Add("Access-Control-Allow-Credentials", "true")
-		// 	req.Header.Add("Access-Control-Allow-Headers", "Content-Type")
-		// 	return nil
-		// })
 	})
 
 	fmt.Println("Server running on localhost: 5001")
@@ -51,6 +43,9 @@ func main() {
 		eventName := "location"
 
 		server.BroadcastTo(company, eventName, fmt.Sprintf("Latitude: %f, Longitude: %f", randLat, randLong))
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Location sent"))
 	})
 
 	log.Fatal(http.ListenAndServe(":5001", nil))
